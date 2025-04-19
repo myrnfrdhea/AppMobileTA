@@ -50,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 onPressed: () {
-                  Get.to(const RegisterScreen());
+                  Get.to(() => const RegisterScreen());
                 },
                 child: const Text('Sign Up', style: TextStyle(fontSize: 16)),
               ),
@@ -63,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 onPressed: () {
-                  Get.to(const LoginScreen());
+                  Get.to(() => const LoginScreen());
                 },
                 child: const Text('Login', style: TextStyle(fontSize: 16)),
               ),

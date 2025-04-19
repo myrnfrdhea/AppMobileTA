@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:smart_home_app/controllers/register_controller.dart';
 import 'package:smart_home_app/widgets/custom_text_field.dart';
 
-class RegisterScreen extends StatefulWidget {
+class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
-}
-
-class _RegisterScreenState extends State<RegisterScreen> {
-  @override
   Widget build(BuildContext context) {
+    final controller = Get.put(RegisterController());
+
     return Scaffold(
       backgroundColor: const Color(0xFF1166AA),
       body: SafeArea(
@@ -26,10 +25,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 24, color: Colors.white),
                 ),
-                Image.asset(
-                  "assets/images/logo_icon.png",
-                  scale: 1,
-                ),
+                Image.asset("assets/images/logo_icon.png", scale: 1),
                 Text(
                   'Create Account',
                   style: TextStyle(
@@ -43,27 +39,46 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   child: Column(
                     children: [
                       const SizedBox(height: 24),
-                      const CustomTextField(labelText: 'Nama Lengkap'),
+                      CustomTextField(
+                        labelText: 'Nama Lengkap',
+                        controller: controller.fullNameController,
+                      ),
                       const SizedBox(height: 24),
-                      const CustomTextField(labelText: 'Email'),
+                      CustomTextField(
+                        labelText: 'Email',
+                        controller: controller.emailController,
+                      ),
                       const SizedBox(height: 24),
-                      const CustomTextField(labelText: 'No Telp'),
+                      CustomTextField(
+                        labelText: 'No Telp',
+                        controller: controller.phoneController,
+                      ),
                       const SizedBox(height: 24),
-                      const CustomTextField(labelText: 'Password', isPassword: true),
+                      CustomTextField(
+                        labelText: 'Password',
+                        isPassword: true,
+                        controller: controller.passwordController,
+                      ),
                       const SizedBox(height: 24),
-                      const CustomTextField(labelText: 'Konfirmasi Password', isPassword: true),
+                      CustomTextField(
+                        labelText: 'Konfirmasi Password',
+                        isPassword: true,
+                        controller: controller.confirmPasswordController,
+                      ),
                       const SizedBox(height: 24),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: const Size(double.infinity, 50),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12), // Less rounded corners
+                      Obx(
+                        () => ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size(double.infinity, 50),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                           ),
+                          onPressed: controller.isLoading.value ? null : controller.register,
+                          child: controller.isLoading.value
+                              ? const CircularProgressIndicator(color: Colors.white)
+                              : const Text('Register'),
                         ),
-                        onPressed: () {
-                          // Handle register action
-                        },
-                        child: const Text('Register'),
                       ),
                     ],
                   ),
