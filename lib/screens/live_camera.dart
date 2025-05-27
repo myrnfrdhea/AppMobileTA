@@ -254,92 +254,6 @@ class _LiveCameraScreenState extends State<LiveCameraScreen> {
     );
   }
 
-  Widget _buildDetectionModal() {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.6,
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text('Recent Detections', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                IconButton(onPressed: () => setState(() => _showDetectionLogs = false), icon: const Icon(Icons.close)),
-              ],
-            ),
-          ),
-          Expanded(
-            child:
-                _detectionLogs.isEmpty
-                    ? const Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.security, size: 64, color: Colors.grey),
-                          SizedBox(height: 16),
-                          Text('No detections yet', style: TextStyle(color: Colors.grey)),
-                        ],
-                      ),
-                    )
-                    : ListView.builder(
-                      padding: const EdgeInsets.all(16),
-                      itemCount: _detectionLogs.length,
-                      itemBuilder: (context, index) {
-                        final log = _detectionLogs[index];
-                        bool isIntruder = log['type'] == 'intruder';
-
-                        return Container(
-                          margin: const EdgeInsets.only(bottom: 8),
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: isIntruder ? Colors.red.shade50 : Colors.green.shade50,
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: isIntruder ? Colors.red : Colors.green, width: 1),
-                          ),
-                          child: Row(
-                            children: [
-                              Icon(
-                                isIntruder ? Icons.warning : Icons.check_circle,
-                                color: isIntruder ? Colors.red : Colors.green,
-                                size: 24,
-                              ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      log['nama'] ?? 'Unknown',
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                    Text(
-                                      log['status'] ?? '',
-                                      style: const TextStyle(fontSize: 14, color: Colors.black54),
-                                    ),
-                                    Text(log['waktu'] ?? '', style: const TextStyle(fontSize: 12, color: Colors.grey)),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-          ),
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -407,22 +321,6 @@ class _LiveCameraScreenState extends State<LiveCameraScreen> {
               ],
             ),
           ),
-          if (_showDetectionLogs)
-            Positioned.fill(
-              child: GestureDetector(
-                onTap: () => setState(() => _showDetectionLogs = false),
-                child: Container(
-                  color: Colors.black54,
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: GestureDetector(
-                      onTap: () {}, // Prevent closing when tapping on modal
-                      child: _buildDetectionModal(),
-                    ),
-                  ),
-                ),
-              ),
-            ),
         ],
       ),
     );
